@@ -1,10 +1,10 @@
-> Buka folder ini untuk bagian ini. Semua path relatif terhadap folder ini. Persiapan, troubleshooting, dan cleanup: [README utama](../README.md).
+# Demo 3 · Explain Plan Before/After Index
 
-# Demo 3 · Explain Plan Before/After Index (±45 menit)
+[Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Instruktur memperagakan `EXPLAIN PLAN`, F10, `DISPLAY_CURSOR`, `CREATE INDEX`, dan perbandingan before/after (±20 menit). Peserta mengerjakan 3.0–3.4 (±25 menit).
+Kerjakan 3.0–3.4: baca execution plan, buat index, dan bandingkan sebelum dan sesudah.
 
-## 3.0 Izin membaca statistik eksekusi (±3 menit)
+## 3.0 Izin membaca statistik eksekusi
 
 `DBMS_XPLAN.DISPLAY_CURSOR` (dipakai di P3 dan P6) membaca view sistem `V$SQL` dan `V$SESSION`. User `ALP_DEV` belum punya izin itu. Di laptop sendiri kamu admin database-nya, jadi berikan izinnya sekali lewat terminal di folder `demo-3`:
 
@@ -15,7 +15,7 @@ docker exec -it oracle-alp sqlplus / as sysdba "@/tmp/02-grant-plan-stats.sql"
 
 Yang harus terlihat: `Grant succeeded.` empat kali, lalu `Izin statistik plan untuk ALP_DEV selesai.` Docker Desktop kadang menambahkan teks `What's next:` di bawahnya; abaikan saja.
 
-## 3.1 Tambah data bulk (±4 menit)
+## 3.1 Tambah data bulk
 
 Buka `03-bulk-transactions.sql`, pasang koneksi, tekan **F5**. Tunggu 10–20 detik.
 
@@ -23,7 +23,7 @@ Yang harus terlihat di akhir **Script Output**: `200000 rows inserted.`, `Commit
 
 Data bulk masuk ke rekening uji `SIM-2000001` s.d. `SIM-2000500` milik `CIF-SIM-9999` di `KCP-SIM-99`. Rekening Tabungan UMKM asli tidak berubah, jadi mutasi `SIM-1000004` (account_id 4) tetap 4 transaksi di Februari.
 
-## 3.2 Plan dan Buffers sebelum index (±7 menit)
+## 3.2 Plan dan Buffers sebelum index
 
 Buka `04-explain-plan.sql`, pasang koneksi. Jalankan satu per satu dengan Run Statement:
 
@@ -39,7 +39,7 @@ Catat ke tabel ini (angka dari kolom baris `Id 0`):
 | Sebelum index | | | | |
 | Sesudah index | | | | |
 
-## 3.3 Buat index dan bandingkan (±7 menit)
+## 3.3 Buat index dan bandingkan
 
 1. P4: `CREATE INDEX idx_txn_account_at ...`. Yang harus terlihat: `Index IDX_TXN_ACCOUNT_AT created.`
 2. P5: plan sesudah index (atau **F10** di `SELECT` P6).
@@ -48,7 +48,7 @@ Catat ke tabel ini (angka dari kolom baris `Id 0`):
 
 Yang harus terlihat: operation berubah, cost dan Buffers turun jauh, A-Rows tetap 4. Angka E-Rows (perkiraan optimizer) sama di kedua plan; yang berubah cara membacanya.
 
-## 3.4 Pola yang membuat index tidak terpakai (±4 menit)
+## 3.4 Pola yang membuat index tidak terpakai
 
 Jalankan P7 dan P8 (masing-masing `EXPLAIN PLAN` lalu `DISPLAY`). Tulis satu kalimat untuk masing-masing: kenapa plan-nya tidak memakai `IDX_TXN_ACCOUNT_AT`. Lihat slide *Pola yang Bikin Index Tidak Dipakai*.
 

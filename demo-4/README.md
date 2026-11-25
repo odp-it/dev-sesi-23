@@ -1,12 +1,12 @@
-> Buka folder ini untuk bagian ini. Semua path relatif terhadap folder ini. Persiapan, troubleshooting, dan cleanup: [README utama](../README.md).
+# Demo 4 · Query dari Java atau Node.js
 
-# Demo 4 · Query dari Java atau Node.js (±25 menit)
+[Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Instruktur memperagakan driver, bind variable, dan password dari environment variable (±10 menit). Peserta mengerjakan 4.0–4.2 (±15 menit).
+Kerjakan 4.0–4.2: jalankan query dari Java atau Node.js dengan bind variable.
 
 Pilih satu jalur. Keduanya menjalankan query mutasi yang sama dengan bind variable dan mencetak hasil yang sama. Koneksi langsung satu kali, tanpa connection pool dan tanpa file `.env` (dibahas di sesi 30).
 
-## 4.0 Simpan password di environment variable (±2 menit)
+## 4.0 Simpan password di environment variable
 
 Password tidak ditulis di file kode. Buka terminal di folder `demo-4`, ketik perintah sesuai OS, lalu ketik password `ALP_DEV` (tidak tampil di layar) dan Enter.
 
@@ -39,7 +39,7 @@ $env:ORACLE_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR([Runti
 
 Variabel ini hanya berlaku di terminal itu. Buka terminal baru = ulangi 4.0.
 
-## 4.1–4.2 · Jalur Java (±12 menit)
+## 4.1–4.2 · Jalur Java
 
 1. Masuk ke folder `java` dan cek JDK:
 
@@ -91,7 +91,7 @@ Mutasi SIM-1000004 bulan 2026-02
 
 5. Ganti argumen, mis. `SIM-1000001 2026-03`, dan jalankan lagi.
 
-## 4.1–4.2 · Jalur Node.js (±12 menit)
+## 4.1–4.2 · Jalur Node.js
 
 1. Masuk ke folder `node` dan install dependency (sekali saja):
 

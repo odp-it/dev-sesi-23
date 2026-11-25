@@ -1,16 +1,16 @@
-> Buka folder ini untuk bagian ini. Semua path relatif terhadap folder ini. Persiapan, troubleshooting, dan cleanup: [README utama](../README.md).
+# Demo 1 · Query Laporan & Validasi
 
-# Demo 1 · Query Laporan & Validasi (±55 menit)
+[Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Instruktur memperagakan `INNER JOIN`, `LEFT JOIN`, `COUNT(kolom)`, `CASE` di `SUM`, `EXISTS`, dan rekonsiliasi (±20 menit). Peserta mengerjakan 1.1–1.3, lalu hasilnya dibahas bersama (±35 menit).
+Kerjakan 1.1–1.3: query laporan dengan `JOIN`, aggregate, `EXISTS`, dan query validasi.
 
 Buka `01-report-queries.sql`, pasang koneksi `ALP_DEV @ FREEPDB1`. R1 sudah dijawab sebagai contoh.
 
-## 1.1 Jalankan R1 dan baca hasilnya (±3 menit)
+## 1.1 Jalankan R1 dan baca hasilnya
 
 Jalankan R1 dengan Run Statement. Yang harus terlihat: 3 baris, `KCP-SIM-03` punya `JUMLAH_NASABAH` 3, padahal cabang itu punya 4 nasabah.
 
-## 1.2 Kerjakan R1b–R6 (±22 menit)
+## 1.2 Kerjakan R1b–R6
 
 Tulis query di bawah tiap soal, jalankan, cocokkan kolom dan jumlah baris dengan keterangan `Expected`. Sintaks: lihat slide *INNER JOIN*, *LEFT JOIN untuk Data Tanpa Pasangan*, *JOIN Tiga Tabel*, *Subquery dan EXISTS*, *Rekonsiliasi Saldo*.
 
@@ -19,7 +19,7 @@ Titik rawan:
 - Filter tabel kanan di `WHERE` mengubah `LEFT JOIN` menjadi seperti `INNER JOIN`.
 - R5 dan R6 yang benar menghasilkan **0 baris**. Query validasi yang "kosong" artinya datanya bersih.
 
-## 1.3 Simulasi data rusak (±5 menit)
+## 1.3 Simulasi data rusak
 
 1. Jalankan `UPDATE` di bawah R7. Yang harus terlihat: `1 row updated.`
 2. Jalankan lagi query R6. Yang harus terlihat: 1 baris `SIM-1000006` dengan `SELISIH` `1000000`.

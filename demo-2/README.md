@@ -1,19 +1,19 @@
-> Buka folder ini untuk bagian ini. Semua path relatif terhadap folder ini. Persiapan, troubleshooting, dan cleanup: [README utama](../README.md).
+# Demo 2 · Transfer dengan Commit & Rollback
 
-# Demo 2 · Transfer dengan Commit & Rollback (±35 menit)
+[Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Instruktur memperagakan transfer empat perintah dan dua editor berdampingan (±10 menit). Peserta mengerjakan 2.0–2.7 berpasangan (±25 menit).
+Kerjakan 2.0–2.7 berpasangan: transfer dalam satu transaksi, dilihat dari dua session.
 
 Satu laptop, dua tab editor. Setiap tab worksheet SQL Developer for VS Code memakai session database sendiri.
 
-## 2.0 Siapkan dua session (±3 menit)
+## 2.0 Siapkan dua session
 
 1. Buka `02-transfer.sql`, pasang koneksi `ALP_DEV @ FREEPDB1`. Ini **session A**.
 2. Buka `02-cek-session-b.sql`, klik kanan tab-nya → **Split Right** (atau Command Palette → **View: Split Editor Right**), lalu tutup tab `02-cek-session-b.sql` yang tersisa di kiri. Pasang koneksi di editor kanan. Ini **session B**.
 
 Yang harus terlihat: dua editor berdampingan, status bar keduanya `(Dedicated) ALP_DEV @ FREEPDB1`.
 
-## 2.1 Catat saldo awal (±2 menit)
+## 2.1 Catat saldo awal
 
 Session A: jalankan 2.1. Catat saldo:
 
@@ -22,25 +22,25 @@ Session A: jalankan 2.1. Catat saldo:
 | SIM-1000001 | |
 | SIM-1000003 | |
 
-## 2.2 Jalankan transfer tanpa commit (±5 menit)
+## 2.2 Jalankan transfer tanpa commit
 
 Session A: jalankan 4 perintah 2.2 satu per satu (2 `UPDATE`, 2 `INSERT`). Yang harus terlihat di **Script Output**: `1 row updated.` dua kali, `1 row inserted.` dua kali.
 
 Kalau `UPDATE` pertama menghasilkan `0 rows updated.`, berhenti di sini dan jalankan `ROLLBACK;`: rekening sumber tidak aktif atau saldonya kurang.
 
-## 2.3 Bandingkan dua session (±5 menit)
+## 2.3 Bandingkan dua session
 
 1. Session A: jalankan 2.3. Saldo sudah berubah.
 2. Session B: jalankan kedua query (saldo dan `REF-SIM-T%`).
 
 Yang harus terlihat di session B: saldo masih sama dengan saldo awal, dan query transaksi `REF-SIM-T%` menghasilkan 0 baris. Perubahan session A belum terlihat oleh session lain karena belum di-commit.
 
-## 2.4 Commit dan cek lagi (±3 menit)
+## 2.4 Commit dan cek lagi
 
 1. Session A: jalankan `COMMIT;`. Yang harus terlihat: `Commit complete.`
 2. Session B: jalankan lagi kedua query. Saldo sekarang sama dengan di session A, dan ada 2 transaksi `REF-SIM-T00001` (`TRANSFER_KELUAR`) dan `REF-SIM-T00002` (`TRANSFER_MASUK`).
 
-## 2.5–2.7 Transfer gagal dan rollback (±7 menit, tukar peran)
+## 2.5–2.7 Transfer gagal dan rollback
 
 1. Session A: jalankan dua `UPDATE` di 2.5 satu per satu. `UPDATE` pertama (kredit ke `SIM-1000010`) berhasil. `UPDATE` kedua ditolak:
 

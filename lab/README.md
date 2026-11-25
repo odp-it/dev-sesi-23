@@ -1,6 +1,6 @@
-> Buka folder ini untuk bagian ini. Semua path relatif terhadap folder ini. Persiapan, troubleshooting, dan cleanup: [README utama](../README.md).
+# Lab · Laporan + Optimasi untuk Aplikasi ALP Tim
 
-# Lab · Laporan + Optimasi untuk Aplikasi ALP Tim (±35 menit, boleh lanjut setelah kelas)
+[Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
 **Skenario.** Schema ALP tim dari Lab sesi 22 akan dipakai backend. Tim lead meminta paket database untuk rilis pertama dashboard: satu laporan ringkasan, satu laporan data yang belum punya pasangan, satu query validasi yang bisa dijalankan kapan saja, satu proses bisnis yang aman sebagai transaksi, dan query yang paling sering dipakai aplikasi sudah dibantu index dengan bukti execution plan. Semua dinilai dengan rubrik di bawah.
 
@@ -24,12 +24,12 @@ Satu laptop per tim, schema `ALP_DEV` milik laptop itu. Tim yang schema Lab sesi
 | Data uji | 10 | `cek-lab.sql` | Tabel tim terbesar minimal 5.000 baris (10), atau minimal 1.000 baris (5) |
 | Index buatan tim | 10 | `cek-lab.sql` | Index di tabel tim di luar index PK/`UNIQUE`: composite (10), satu kolom (5) |
 | Query utama + plan | 20 | `cek-lab.sql` | `QUERY_UTAMA` memakai `WHERE` dan berisi minimal 1 baris (5); plan memakai index buatan tim lewat range atau unique scan (15) |
-| Transaksi | 10 | Instruktur atau tim lain | Proses bisnis minimal 2 DML dengan `COMMIT` (5); skenario gagal di-`ROLLBACK` dan data terbukti kembali (5) |
-| Bukti before/after | 5 | Instruktur atau tim lain | Tabel operation dan cost (plus Buffers bila 3.0 sudah dijalankan) sebelum dan sesudah index |
-| Bukti validasi | 5 | Instruktur atau tim lain | Data sengaja dirusak, `CEK_VALIDASI` menampilkannya, `ROLLBACK`, kembali 0 baris |
+| Transaksi | 10 | Review tim lain | Proses bisnis minimal 2 DML dengan `COMMIT` (5); skenario gagal di-`ROLLBACK` dan data terbukti kembali (5) |
+| Bukti before/after | 5 | Review tim lain | Tabel operation dan cost (plus Buffers bila 3.0 sudah dijalankan) sebelum dan sesudah index |
+| Bukti validasi | 5 | Review tim lain | Data sengaja dirusak, `CEK_VALIDASI` menampilkannya, `ROLLBACK`, kembali 0 baris |
 | **Total** | **100** | | |
 
-Kalau waktu kelas mepet, dahulukan kriteria wajib: laporan ringkasan (20), query validasi (10), index buatan tim (10), query utama + plan (20) = 60 poin. Skor kurang dari 60 setelah waktu kelas habis: lanjutkan setelah kelas sampai memenuhi rubrik. Tugas lanjutan tidak dikumpulkan; cek sendiri dengan `cek-lab.sql` dan rubrik di atas.
+Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi (10), index buatan tim (10), query utama + plan (20) = 60 poin. Target minimal 60 poin. Cek sendiri dengan `cek-lab.sql` dan rubrik di atas.
 
 `cek-lab.sql` membaca katalog, menjalankan `SELECT` pada view tim, dan membuat plan `QUERY_UTAMA`. Baris plan milik skrip dibatalkan lagi (`ROLLBACK TO SAVEPOINT`), jadi data dan transaksi yang belum di-commit tidak berubah.
 
