@@ -1,0 +1,16 @@
+{
+  "name": "sesi-23-mutasi-node",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Sesi 23: query mutasi Tabungan UMKM dari Node.js dengan node-oracledb Thin",
+  "scripts": {
+    "mutasi": "node mutasi.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "oracledb": "26.0.0"
+  }
+}
