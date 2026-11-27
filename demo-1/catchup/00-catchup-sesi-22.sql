@@ -15,7 +15,7 @@ SELECT COUNT(*) AS sisa_tabel
 FROM user_tables
 WHERE table_name IN ('BRANCHES', 'CUSTOMERS', 'ACCOUNTS', 'TRANSACTIONS');
 
--- Sesi 22 · DDL Tabungan UMKM (SOLUTION, semua constraint lengkap)
+-- Sesi 22 · DDL Tabungan UMKM (lengkap, semua constraint)
 -- Jalankan sebagai ALP_DEV dengan Run Script (F5). Urutan create mengikuti FK:
 -- BRANCHES -> CUSTOMERS -> ACCOUNTS -> TRANSACTIONS.
 

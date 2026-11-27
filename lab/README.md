@@ -20,11 +20,11 @@ Struktur file Tahap 3 (dari template repo kelompok):
 3. **Transaksi (`db/06-transaksi.sql`).** Satu proses bisnis tema kelompok, minimal 2 perintah DML: skenario berhasil dengan `COMMIT`, skenario gagal yang di-`ROLLBACK`, dengan `SELECT` sebelum dan sesudah. `CEK_VALIDASI` tetap 0 baris setelahnya.
 4. **Index (`db/07-index.sql`).** Catat plan `QUERY_UTAMA` sebelum index, buat index composite berawalan kelompok (kolom filter `=` dulu, lalu kolom waktu), catat plan sesudahnya. Operation harus berubah dari `TABLE ACCESS FULL` ke `INDEX RANGE SCAN`.
 5. **`00-run-all.sql`.** Panggil `01`, `02`, `04`, `05`, `07` (06 tidak). Jalankan dua kali berturut-turut tanpa error.
-6. **Cek otomatis.** Buka `cek-lab.sql` dari folder lab, ganti awalan di baris `DEFINE awalan = 'GRD'` dengan awalan kelompok (huruf besar, tanpa garis bawah), pasang koneksi, tekan **F5**. Output berupa tabel poin otomatis (maks. 80). Perbaiki file `db/` kelompok, bangun ulang, cek lagi. Jalankan juga `cek-erd.py` (sesi 21) dan `cek-lab.sql` sesi 22 untuk bukti.
+6. **Cek otomatis.** Buka `cek-lab.sql` sesi 23 (folder `lab` di repo `dev-sesi-23`, atau folder `challenge` di ZIP lab sesi 23), ganti awalan di baris `DEFINE awalan = 'GRD'` dengan awalan kelompok (huruf besar, tanpa garis bawah), pasang koneksi, tekan **F5**. Output berupa tabel poin otomatis (maks. 80). Perbaiki file `db/` kelompok, bangun ulang, cek lagi. Jalankan juga `cek-erd.py` (sesi 21) dan `cek-lab.sql` sesi 22 untuk bukti.
 7. **README repo kelompok.** Isi bagian **Peta fitur → tabel → query** (satu baris per fitur MVP, kolom endpoint usulan), **Laporan untuk dashboard** (hasil `LAP_RINGKASAN` ringkas dan tiga view lain), **Pertanyaan bisnis** (3 pertanyaan yang dijawab view atau query kelompok), dan **Bukti cek** (tempel baris `Subtotal otomatis` ketiga cek serta cost plan sebelum dan sesudah). Hapus semua `TODO`.
 8. **Push** ke repo kelompok. Semua harus siap sebelum presentasi sesi 24 pukul 16.00 (pakai jeda siang) dan dinilai langsung di kelas; push final 23.59 hanya untuk serah terima ke pengajar backend.
 
-Contoh hasil akhir (ditayangkan instruktur): ketiga tema mendapat skor otomatis 80 / 80 di `cek-lab.sql` sesi 23, dengan cost plan 107 → 13 (Perbankan), 104 → 10 (E-commerce), dan 172 → 10 (Logistik).
+Instruktur menayangkan contoh hasil akhir di layar (view, plan sebelum/sesudah index, dan output cek); filenya tidak dibagikan.
 
 ## Data uji dan index
 
@@ -47,7 +47,7 @@ Rubrik ini panduan kerja kelompok; nilai project diberikan saat presentasi sesi 
 | Bukti validasi | 5 | Review tim lain | Data sengaja dirusak, `CEK_VALIDASI` menampilkannya, `ROLLBACK`, kembali 0 baris |
 | **Total** | **100** | | |
 
-Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi (10), index buatan tim (10), query utama + plan (20) = 60 poin. Target minimal 60 poin.sql`.
+Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi (10), index buatan tim (10), query utama + plan (20) = 60 poin. Target minimal 60 poin.
 
 `cek-lab.sql` membaca katalog, menjalankan `SELECT` pada view kelompok, dan membuat plan `QUERY_UTAMA`. Baris plan milik skrip dibatalkan lagi (`ROLLBACK TO SAVEPOINT`), jadi data dan transaksi yang belum di-commit tidak berubah.
 
@@ -58,7 +58,7 @@ Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi 
 
 ## Persiapan Presentasi (sesi 24, 16.00–17.00)
 
-Tiap kelompok tampil 5 menit presentasi + 3 menit tanya jawab, tanpa slide. README repo kelompok menjadi alur bicara dan demo dijalankan langsung di VS Code dari laptop salah satu anggota. **Urutan presentasi diumumkan di akhir sesi 23.**
+Tiap kelompok tampil 5 menit presentasi + 3 menit tanya jawab, tanpa slide. README repo kelompok menjadi alur bicara dan demo dijalankan langsung di VS Code dari laptop salah satu anggota. **Urutan presentasi diumumkan di akhir sesi 23.** Pergantian kelompok dilakukan saat tanya jawab: kelompok berikutnya menyiapkan laptop, membuka VS Code, dan memasang koneksi selagi kelompok sebelumnya menjawab pertanyaan.
 
 Alur 5 menit:
 

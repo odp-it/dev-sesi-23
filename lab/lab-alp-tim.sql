@@ -1,26 +1,27 @@
--- Sesi 23 · Lab: laporan + optimasi untuk aplikasi ALP tim (rubrik 100 poin; cek otomatis: cek-lab.sql)
--- Salin file ini menjadi lab-alp-<nama-tim>.sql. Pakai tabel ALP tim dari Lab sesi 22 (awalan tim,
--- mis. GRD_). Jalankan di schema ALP_DEV. Semua nama view dan index memakai awalan yang sama.
--- Semua contoh di bawah masih berupa komentar: ganti <...> dengan nama tabel dan kolom tim, lalu hapus "-- ".
+-- Sesi 23 · TEMPLATE LAMA (satu file). Lab sekarang memakai db/04-data-uji.sql s.d. db/07-index.sql di repo kelompok
+-- (template odp-it/alp-db-template); file ini hanya rujukan pola. Cek otomatis tetap cek-lab.sql sesi 23.
+-- Pakai tabel ALP kelompok dari Lab sesi 22 (awalan kelompok, mis. GRD_). Semua nama view dan index memakai
+-- awalan yang sama. Semua contoh di bawah berupa komentar: ganti <...> dengan nama tabel dan kolom kelompok.
 -- Data simulasi saja.
 
--- 1. Data uji: tabel transaksi utama tim minimal 5.000 baris
+-- 1. Data uji: tabel transaksi utama kelompok minimal 5.000 baris (disarankan 50.000)
 --    Dibangkitkan dengan rumus (CONNECT BY, MOD) seperti ../demo-3/03-bulk-transactions.sql. Beri penanda data uji
 --    (mis. kode berawalan 'UJI-') supaya bisa dihapus lagi, dan hapus dulu data uji lama supaya file
---    aman dijalankan ulang. Tabel induk juga perlu cukup banyak baris, mis. 200 pelanggan uji.
+--    aman dijalankan ulang. Sebar ke ±500 induk uji (akun/pembeli/kurir uji): dengan sedikit induk, optimizer
+--    tetap memilih full scan dan index tidak terpakai.
 --    Semua constraint tetap berlaku untuk data uji.
 -- DELETE FROM <awalan>_<tabel_transaksi> WHERE <kolom_kode> LIKE 'UJI-%';
 -- INSERT INTO <awalan>_<tabel_transaksi> (<kolom>, ...)
 -- SELECT 'UJI-' || LPAD(g.n, 6, '0'),
---        <rumus FK dengan MOD(g.n, <jumlah baris induk>)>,
+--        <rumus FK dengan MOD(g.n, 500)>,
 --        TIMESTAMP '2026-01-01 08:00:00' + NUMTODSINTERVAL(MOD(g.n * 7919, 89 * 24 * 60), 'MINUTE'),
 --        ...
--- FROM (SELECT LEVEL AS n FROM dual CONNECT BY LEVEL <= 20000) g;
+-- FROM (SELECT LEVEL AS n FROM dual CONNECT BY LEVEL <= 50000) g;
 -- COMMIT;
 -- BEGIN DBMS_STATS.GATHER_TABLE_STATS(USER, '<AWALAN>_<TABEL_TRANSAKSI>'); END;
 -- /
 
--- 2. Laporan ringkasan untuk dashboard: JOIN minimal 2 tabel tim + GROUP BY
+-- 2. Laporan ringkasan untuk dashboard: JOIN minimal 2 tabel kelompok + GROUP BY
 -- CREATE OR REPLACE VIEW <awalan>_lap_ringkasan AS
 -- SELECT ...
 -- FROM <awalan>_<tabel_1> a
@@ -28,13 +29,13 @@
 -- GROUP BY ...;
 -- SELECT * FROM <awalan>_lap_ringkasan FETCH FIRST 10 ROWS ONLY;
 
--- 3. Laporan data tanpa pasangan (mis. pelanggan tanpa transaksi): LEFT JOIN atau NOT EXISTS, 2 tabel tim.
+-- 3. Laporan data tanpa pasangan (mis. pelanggan tanpa transaksi): LEFT JOIN atau NOT EXISTS, 2 tabel kelompok.
 --    Hasilnya harus minimal 1 baris: siapkan satu data induk yang memang belum punya pasangan.
 -- CREATE OR REPLACE VIEW <awalan>_lap_tanpa_pasangan AS
 -- SELECT ...;
 -- SELECT * FROM <awalan>_lap_tanpa_pasangan;
 
--- 4. Query validasi / rekonsiliasi: tampilkan HANYA data yang melanggar aturan bisnis tim.
+-- 4. Query validasi / rekonsiliasi: tampilkan HANYA data yang melanggar aturan bisnis kelompok.
 --    Data sehat = 0 baris.
 -- CREATE OR REPLACE VIEW <awalan>_cek_validasi AS
 -- SELECT ...;
@@ -46,7 +47,7 @@
 -- ROLLBACK;
 -- SELECT COUNT(*) AS baris_bermasalah FROM <awalan>_cek_validasi;
 
--- 5. Transaksi (dinilai manual): satu proses bisnis aplikasi tim berisi minimal 2 perintah DML.
+-- 5. Transaksi (dinilai manual): satu proses bisnis aplikasi kelompok berisi minimal 2 perintah DML.
 --    Pilih data yang kondisinya bisa diulang, atau kembalikan di awal bagian ini.
 --    5a. Berhasil: tampilkan data sebelum, jalankan DML, COMMIT, tampilkan sesudah.
 -- SELECT ... ;
@@ -62,7 +63,7 @@
 -- ROLLBACK;
 -- SELECT ... ;
 
--- 6. Optimasi query yang paling sering dipakai aplikasi tim.
+-- 6. Optimasi query yang paling sering dipakai aplikasi kelompok.
 --    Isi view dengan query itu apa adanya, termasuk WHERE berisi nilai contoh.
 -- CREATE OR REPLACE VIEW <awalan>_query_utama AS
 -- SELECT ...
@@ -73,15 +74,15 @@
 
 --    6a. Plan SEBELUM index
 -- DROP INDEX IF EXISTS <awalan>_idx_<nama>;
--- EXPLAIN PLAN SET STATEMENT_ID = 'tim-sebelum' FOR SELECT * FROM <awalan>_query_utama;
--- SELECT plan_table_output FROM TABLE(DBMS_XPLAN.DISPLAY(NULL, 'tim-sebelum', 'TYPICAL'));
+-- EXPLAIN PLAN SET STATEMENT_ID = 'kelompok-sebelum' FOR SELECT * FROM <awalan>_query_utama;
+-- SELECT plan_table_output FROM TABLE(DBMS_XPLAN.DISPLAY(NULL, 'kelompok-sebelum', 'TYPICAL'));
 
 --    6b. Index composite: kolom filter "=" dulu, kolom rentang sesudahnya
 -- CREATE INDEX <awalan>_idx_<nama> ON <awalan>_<tabel_transaksi> (<kolom_filter>, <kolom_waktu>);
 
 --    6c. Plan SESUDAH index
--- EXPLAIN PLAN SET STATEMENT_ID = 'tim-sesudah' FOR SELECT * FROM <awalan>_query_utama;
--- SELECT plan_table_output FROM TABLE(DBMS_XPLAN.DISPLAY(NULL, 'tim-sesudah', 'TYPICAL'));
+-- EXPLAIN PLAN SET STATEMENT_ID = 'kelompok-sesudah' FOR SELECT * FROM <awalan>_query_utama;
+-- SELECT plan_table_output FROM TABLE(DBMS_XPLAN.DISPLAY(NULL, 'kelompok-sesudah', 'TYPICAL'));
 
 --    6d. Bukti before/after (dinilai manual): isi tabel ini dari hasil 6a dan 6c.
 --        Buffers hanya bila langkah 3.0 sudah dijalankan (GATHER_PLAN_STATISTICS + DISPLAY_CURSOR).
