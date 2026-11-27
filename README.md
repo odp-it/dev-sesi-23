@@ -62,7 +62,7 @@ Urutan presentasi diumumkan di akhir sesi ini.
 
 ## Dari Demo ke Tema Kelompok
 
-Setiap konsep Demo ada versinya di tema kelompok. Nama view dan index di tabel ini adalah contoh dari tiga kelompok fiktif (KasUMKM, PasarUMKM, KirimUMKM); kelompok memakai awalan dan nama kolomnya sendiri.
+Setiap konsep Demo ada versinya di tema kelompok. Nama view dan index di tabel ini adalah contoh dari tiga kelompok fiktif (wondr Insight Bisnis, wondr Merchant Store, Xpora Ship); kelompok memakai awalan dan nama kolomnya sendiri.
 
 | Konsep di Demo (Tabungan UMKM) | Perbankan (`KAS_`) | E-commerce (`MKT_`) | Logistik (`KRM_`) |
 | --- | --- | --- | --- |
