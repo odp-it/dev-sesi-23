@@ -9,7 +9,9 @@
 - [ ] Transfer gagal di 2.5 dibatalkan dengan `ROLLBACK`, saldo `SIM-1000010` kembali
 - [ ] Tabel before/after index terisi (operation, cost, Buffers)
 - [ ] Mutasi `SIM-1000004` Februari 2026 tampil dari Java atau Node.js: 4 transaksi
-- [ ] Lab: file Lab tim jalan dan `lab/cek-lab.sql` menampilkan skor otomatis (target minimal 48 dari 80, setara 60%)
+- [ ] Lab: `db/04`–`db/07` ada di repo kelompok, `00-run-all.sql` jalan dua kali tanpa error, dan `lab/cek-lab.sql` sesi 23 menampilkan skor otomatis (target minimal 48 dari 80, setara 60%)
+- [ ] Lab: `db/06-transaksi.sql` punya skenario `COMMIT` dan skenario `ROLLBACK`
+- [ ] Lab: README repo kelompok berisi peta fitur, laporan, 3 pertanyaan bisnis, dan bukti cek (tanpa `TODO`)
 
 ## Verifikasi & Expected Result
 
@@ -24,6 +26,6 @@
 | 3.1 | `JUMLAH_TRANSAKSI 200127`, `JUMLAH_REKENING 515` |
 | 3.2–3.3 | Sebelum: full scan pada `TRANSACTIONS`, Buffers ribuan. Sesudah: `INDEX RANGE SCAN` pada `IDX_TXN_ACCOUNT_AT`, Buffers satu digit. A-Rows 4 di keduanya |
 | 4.2 | 4 transaksi, masuk 4.800.000,00, keluar 300.000,00 |
-| Lab | `lab/cek-lab.sql` menampilkan 6 baris kriteria dan subtotal otomatis maks. 80 |
+| Lab | `lab/cek-lab.sql` menampilkan 6 baris kriteria dan subtotal otomatis maks. 80; `00-run-all.sql` dua kali berturut-turut tanpa error; plan `QUERY_UTAMA` berubah dari `TABLE ACCESS FULL` ke `INDEX RANGE SCAN` pada index kelompok |
 
 Cost dan Buffers bisa sedikit berbeda di laptop lain (ukuran blok, statistik). Yang harus sama: jenis operation, A-Rows, dan selisih yang jauh antara sebelum dan sesudah.
