@@ -88,7 +88,7 @@ Setiap folder punya `README.md` berisi langkahnya. Kerjakan berurutan: `demo-1` 
 
 ## Studi Kasus
 
-Tabungan UMKM adalah fitur keuangan digital untuk nasabah UMKM sebuah bank fiktif. Tim operasional bank fiktif ini butuh laporan saldo per cabang, mutasi rekening per bulan, daftar nasabah yang belum aktif bertransaksi, dan arus kas UMKM per kategori untuk dashboard. Setiap transfer harus berhasil berdua (debit dan kredit) atau batal berdua, dan saldo rekening harus selalu cocok dengan total transaksinya. Saat data membesar, query mutasi harus tetap cepat. Aplikasi Java dan Node.js nanti membaca data yang sama.
+Tabungan UMKM adalah fitur keuangan digital untuk nasabah UMKM sebuah bank fiktif. Tim operasional bank fiktif ini butuh laporan saldo per cabang, mutasi rekening per bulan, daftar nasabah yang belum aktif bertransaksi, dan arus kas UMKM per kategori untuk dashboard. Setiap transfer harus tersimpan lengkap (debit dan kredit) atau dibatalkan semua, dan saldo rekening harus selalu cocok dengan total transaksinya. Saat data membesar, query mutasi harus tetap cepat. Aplikasi Java dan Node.js nanti membaca data yang sama.
 
 ## Bantuan
 
