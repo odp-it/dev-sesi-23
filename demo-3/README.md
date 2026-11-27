@@ -2,7 +2,7 @@
 
 [Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Kerjakan 3.0–3.4: baca execution plan, buat index, dan bandingkan sebelum dan sesudah.
+Kerjakan 3.0-3.4: baca execution plan, buat index, dan bandingkan sebelum dan sesudah.
 
 ## 3.0 Izin membaca statistik eksekusi
 
@@ -17,7 +17,7 @@ Yang harus terlihat: `Grant succeeded.` empat kali, lalu `Izin statistik plan un
 
 ## 3.1 Tambah data bulk
 
-Buka `03-bulk-transactions.sql`, pasang koneksi, tekan **F5**. Tunggu 10–20 detik.
+Buka `03-bulk-transactions.sql`, pasang koneksi, tekan **F5**. Tunggu 10-20 detik.
 
 Yang harus terlihat di akhir **Script Output**: `200000 rows inserted.`, `Commit complete.`, `JUMLAH_TRANSAKSI 200127`, `JUMLAH_REKENING 515`. Angka `200127` berlaku bila transfer Demo 2 sudah di-commit; kalau belum, `200125`.
 
@@ -58,7 +58,7 @@ Kalau ingin data kembali kecil sebelum Demo 4 atau sesi berikutnya: buka `03b-ha
 
 ## Tantangan tambahan Demo 3 (opsional)
 
-Kerjakan di file baru. Data bulk dan index `IDX_TXN_ACCOUNT_AT` dari langkah 3.1–3.3 sudah ada (untuk nomor 2 index itu wajib ada).
+Kerjakan di file baru. Data bulk dan index `IDX_TXN_ACCOUNT_AT` dari langkah 3.1-3.3 sudah ada (untuk nomor 2 index itu wajib ada).
 
 1. Cari satu transaksi dengan `ref_no = 'REF-SIM-000070'`. Lewat `EXPLAIN PLAN` dan `DBMS_XPLAN.DISPLAY`, index mana yang dipakai Oracle, dan kenapa index itu sudah ada tanpa kamu membuatnya?
 2. Bandingkan dua plan untuk rekening 4 di Februari 2026: `SELECT COUNT(*)` dan `SELECT ref_no`. Mana yang cukup membaca index saja, dan mana yang masih membuka tabel? Cari baris `TABLE ACCESS` di plan.

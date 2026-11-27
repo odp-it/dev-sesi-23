@@ -2,9 +2,42 @@
 
 [Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Kerjakan 2.0–2.7 berpasangan: transfer dalam satu transaksi, dilihat dari dua session.
+Kerjakan 2.0-2.7 berpasangan: transfer dalam satu transaksi, dilihat dari dua session.
 
 Satu laptop, dua tab editor. Setiap tab worksheet SQL Developer for VS Code memakai session database sendiri.
+
+Alur Demo 2 (blok oranye: transfer berhasil, blok biru: transfer gagal lalu rollback):
+
+```mermaid
+---
+config:
+  look: classic
+  themeVariables:
+    actorBkg: "#1C4587"
+    actorBorder: "#1C4587"
+    actorTextColor: "#FFFFFF"
+    actorLineColor: "#999999"
+    signalColor: "#999999"
+---
+sequenceDiagram
+  participant A as Session A · 02-transfer.sql
+  participant DB as Oracle · ALP_DEV
+  participant B as Session B · 02-cek-session-b.sql
+  rect rgba(240, 102, 52, 0.15)
+  A->>DB: 2.2 · 2 UPDATE + 2 INSERT, belum COMMIT
+  B->>DB: 2.3 · SELECT saldo
+  DB-->>B: saldo lama, 0 transaksi REF-SIM-T
+  A->>DB: 2.4 · COMMIT
+  B->>DB: SELECT saldo lagi
+  DB-->>B: saldo baru, 2 transaksi
+  end
+  rect rgba(28, 69, 135, 0.15)
+  A->>DB: 2.5 · UPDATE kredit berhasil, UPDATE debit ORA-02290
+  A->>DB: 2.6 · SELECT: kredit sudah masuk, data setengah jadi
+  A->>DB: 2.7 · ROLLBACK
+  DB-->>A: saldo kembali seperti sebelum 2.5
+  end
+```
 
 ## 2.0 Siapkan dua session
 
@@ -40,7 +73,7 @@ Yang harus terlihat di session B: saldo masih sama dengan saldo awal, dan query 
 1. Session A: jalankan `COMMIT;`. Yang harus terlihat: `Commit complete.`
 2. Session B: jalankan lagi kedua query. Saldo sekarang sama dengan di session A, dan ada 2 transaksi `REF-SIM-T00001` (`TRANSFER_KELUAR`) dan `REF-SIM-T00002` (`TRANSFER_MASUK`).
 
-## 2.5–2.7 Transfer gagal dan rollback
+## 2.5-2.7 Transfer gagal dan rollback
 
 1. Session A: jalankan dua `UPDATE` di 2.5 satu per satu. `UPDATE` pertama (kredit ke `SIM-1000010`) berhasil. `UPDATE` kedua ditolak:
 

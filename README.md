@@ -1,6 +1,6 @@
 # 23 - Oracle Querying & Optimization
 
-Demo memakai tabel dan data Tabungan UMKM dari sesi 22 (fitur keuangan digital untuk nasabah UMKM sebuah bank fiktif). Hasil Demo: query laporan dan rekonsiliasi lintas tabel, transfer yang di-commit dan di-rollback dengan bukti dari dua session, bukti before/after index `IDX_TXN_ACCOUNT_AT` dari execution plan, dan satu query mutasi dari Java atau Node.js dengan bind variable. Lab adalah **Tahap 3 project ALP**: tiap kelompok mengerjakan hal yang sama untuk database kelompoknya sendiri di repo kelompok (`db/04`–`db/07`, README bagian laporan dan bukti cek), lalu mempresentasikannya di akhir sesi 24.
+Demo memakai tabel dan data Tabungan UMKM dari sesi 22 (fitur keuangan digital untuk nasabah UMKM sebuah bank fiktif). Hasil Demo: query laporan dan rekonsiliasi lintas tabel, transfer yang di-commit dan di-rollback dengan bukti dari dua session, bukti before/after index `IDX_TXN_ACCOUNT_AT` dari execution plan, dan satu query mutasi dari Java atau Node.js dengan bind variable. Lab adalah **Tahap 3 project ALP**: tiap kelompok mengerjakan hal yang sama untuk database kelompoknya sendiri di repo kelompok (`db/04` sampai `db/07`, README bagian laporan dan bukti cek), lalu mempresentasikannya di akhir sesi 24.
 
 ## Environment & Tools
 
@@ -25,14 +25,38 @@ Cara menjalankan SQL sama dengan sesi 22: pasang koneksi lewat status bar, **Run
 
 ## Posisi Sesi di Project ALP
 
-Sesi 21–24 membentuk satu project: setiap kelompok (3–4 orang, laptop pribadi) menghasilkan database ALP yang bisa dibangun ulang, terdokumentasi, dan dipresentasikan. Demo selalu memakai kasus Tabungan UMKM; Lab adalah langkah yang sama untuk tema kelompok (Perbankan, E-commerce, atau Logistik) di repo kelompok.
+Sesi 21-24 membentuk satu project: setiap kelompok (3-4 orang, laptop pribadi) menghasilkan database ALP yang bisa dibangun ulang, terdokumentasi, dan dipresentasikan. Demo selalu memakai kasus Tabungan UMKM; Lab adalah langkah yang sama untuk tema kelompok (Perbankan, E-commerce, atau Logistik) di repo kelompok.
+
+```mermaid
+---
+config:
+  look: classic
+  flowchart:
+    wrappingWidth: 260
+---
+flowchart LR
+  s21["Sesi 21<br/>Tahap 1<br/>ERD + kamus data"]
+  s22["Sesi 22<br/>Tahap 2<br/>tabel + data contoh"]
+  s23["Sesi 23 · sesi ini<br/>Tahap 3<br/>laporan + index"]
+  s24["Sesi 24<br/>16.00<br/>presentasi kelompok"]
+  be["Sesi backend<br/>Node.js/Express"]
+  s21 -->|kamus data| s22
+  s22 -->|tabel + data| s23
+  s23 -->|README + bukti cek| s24
+  s24 -->|repo kelompok| be
+  style s21 fill:#1C4587,color:#fff,stroke:#1C4587
+  style s22 fill:#1C4587,color:#fff,stroke:#1C4587
+  style s23 fill:#F06634,color:#fff,stroke:#F06634
+  style s24 fill:#1C4587,color:#fff,stroke:#1C4587
+  style be fill:#1C4587,color:#fff,stroke:#1C4587
+```
 
 | Tahap | Sesi | Hasil di repo kelompok |
 | --- | --- | --- |
 | 1 | 21 | `docs/erd.drawio.png`, `docs/kamus-data.md`, `docs/review.md` |
 | 2 | 22 | `db/01-ddl.sql`, `db/02-seed.sql`, `db/03-test-invalid.sql`, `db/00-run-all.sql` |
 | **3** | **23 (sesi ini)** | `db/04-data-uji.sql`, `db/05-laporan.sql`, `db/06-transaksi.sql`, `db/07-index.sql`, README bagian peta fitur, laporan, pertanyaan bisnis, bukti cek |
-| Presentasi | 24, 16.00–17.00 | 5 menit presentasi + 3 menit tanya jawab per kelompok, tanpa slide, README sebagai alur, demo langsung |
+| Presentasi | 24, 16.00-17.00 | 5 menit presentasi + 3 menit tanya jawab per kelompok, tanpa slide, README sebagai alur, demo langsung |
 
 Urutan presentasi diumumkan di akhir sesi ini.
 
@@ -42,7 +66,7 @@ Setiap konsep Demo punya padanan di tema kelompok. Nama view dan index di tabel 
 
 | Konsep di Demo (Tabungan UMKM) | Perbankan (`KAS_`) | E-commerce (`MKT_`) | Logistik (`KRM_`) |
 | --- | --- | --- | --- |
-| Laporan `GROUP BY` (R1–R4, Demo 1) → `<awalan>_LAP_RINGKASAN` | Arus kas per UMKM per bulan | Penjualan per produk per bulan | Kiriman per gudang per bulan per status |
+| Laporan `GROUP BY` (R1-R4, Demo 1) → `<awalan>_LAP_RINGKASAN` | Arus kas per UMKM per bulan | Penjualan per produk per bulan | Kiriman per gudang per bulan per status |
 | Data tanpa pasangan (R5, `LEFT JOIN`) → `<awalan>_LAP_TANPA_PASANGAN` | Akun yang belum pernah dipakai | Produk yang belum pernah dipesan | Kurir yang belum pernah ditugaskan |
 | Validasi dan rekonsiliasi (R6, R7) → `<awalan>_CEK_VALIDASI` | Saldo vs total transaksi | Pesanan berbayar vs pembayaran, total vs isi pesanan | Status vs riwayat terakhir, berat vs kapasitas kurir |
 | Transaksi `COMMIT`/`ROLLBACK` (Demo 2) → `db/06-transaksi.sql` | Catat pengeluaran + kurangi saldo | Checkout + kurangi stok | Serah ke kurir + catat riwayat |
@@ -77,4 +101,4 @@ Tabungan UMKM adalah fitur keuangan digital untuk nasabah UMKM sebuah bank fikti
 2. Tutup terminal supaya `ORACLE_PASSWORD` hilang dari memori.
 3. `docker stop oracle-alp` kalau sudah selesai.
 
-Schema, data, dan index ini dipakai lagi di sesi 30–33 saat REST API Express membaca dan menulis tabel yang sama, kali ini dengan connection pool dan konfigurasi `.env`.
+Schema, data, dan index ini dipakai lagi di sesi 30-33 saat REST API Express membaca dan menulis tabel yang sama, kali ini dengan connection pool dan konfigurasi `.env`.

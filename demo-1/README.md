@@ -2,7 +2,7 @@
 
 [Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Kerjakan 1.1–1.3: query laporan dengan `JOIN`, aggregate, `EXISTS`, dan query validasi.
+Kerjakan 1.1-1.3: query laporan dengan `JOIN`, aggregate, `EXISTS`, dan query validasi.
 
 Buka `01-report-queries.sql`, pasang koneksi `ALP_DEV @ FREEPDB1`. R1 sudah dijawab sebagai contoh.
 
@@ -10,7 +10,7 @@ Buka `01-report-queries.sql`, pasang koneksi `ALP_DEV @ FREEPDB1`. R1 sudah dija
 
 Jalankan R1 dengan Run Statement. Yang harus terlihat: 3 baris, `KCP-SIM-03` punya `JUMLAH_NASABAH` 3, padahal cabang itu punya 4 nasabah.
 
-## 1.2 Kerjakan R1b–R6
+## 1.2 Kerjakan R1b-R6
 
 Tulis query di bawah tiap soal, jalankan, cocokkan kolom dan jumlah baris dengan keterangan `Expected`. Sintaks: lihat slide *INNER JOIN*, *LEFT JOIN untuk Data Tanpa Pasangan*, *JOIN Tiga Tabel*, *Subquery dan EXISTS*, *Rekonsiliasi Saldo*.
 

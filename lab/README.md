@@ -2,9 +2,9 @@
 
 [Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-**Skenario.** Database kelompok dari Lab sesi 22 akan dipakai backend (sesi 25–36) dan dipresentasikan di sesi 24. Paket yang diminta: laporan untuk dashboard, query validasi yang bisa dijalankan kapan saja, satu proses bisnis yang aman sebagai transaksi, dan query paling sering dipakai aplikasi yang sudah dibantu index dengan bukti execution plan. Contoh hasil akhirnya ditayangkan instruktur per bagian (laporan, plan, peta fitur); file contoh tidak dibagikan.
+**Skenario.** Database kelompok dari Lab sesi 22 akan dipakai backend (sesi 25-36) dan dipresentasikan di sesi 24. Paket yang diminta: laporan untuk dashboard, query validasi yang bisa dijalankan kapan saja, satu proses bisnis yang aman sebagai transaksi, dan query paling sering dipakai aplikasi yang sudah dibantu index dengan bukti execution plan. Contoh hasil akhirnya ditayangkan instruktur per bagian (laporan, plan, peta fitur); file contoh tidak dibagikan.
 
-Satu anggota yang repo-nya sudah berisi hasil sesi 22 (`db/00`–`db/03`) mengerjakan di laptopnya, lalu di-push; anggota lain pull. Kelompok yang belum punya database dari sesi 22: bangun dulu minimal 3 tabel berelasi FK dari `db/01-ddl.sql` template, lalu kejar sisanya dengan pasangan anggota yang databasenya sudah jadi (copy `db/` lewat Git, jangan lewat chat).
+Satu anggota yang repo-nya sudah berisi hasil sesi 22 (`db/00` sampai `db/03`) mengerjakan di laptopnya, lalu di-push; anggota lain pull. Kelompok yang belum punya database dari sesi 22: bangun dulu minimal 3 tabel berelasi FK dari `db/01-ddl.sql` template, lalu kejar sisanya dengan pasangan anggota yang databasenya sudah jadi (copy `db/` lewat Git, jangan lewat chat).
 
 Struktur file Tahap 3 (dari template repo kelompok):
 
@@ -25,6 +25,38 @@ Struktur file Tahap 3 (dari template repo kelompok):
 8. **Push** ke repo kelompok. Semua harus siap sebelum presentasi sesi 24 pukul 16.00 (pakai jeda siang) dan dinilai langsung di kelas; push final 23.59 hanya untuk serah terima ke pengajar backend.
 
 Instruktur menayangkan contoh hasil akhir di layar (view, plan sebelum/sesudah index, dan output cek); filenya tidak dibagikan.
+
+Struktur `db/` di repo kelompok (oranye = diisi di Lab 23, biru = sudah ada dari Lab 22):
+
+```mermaid
+---
+config:
+  look: classic
+  flowchart:
+    wrappingWidth: 260
+---
+flowchart TB
+  run["00-run-all.sql · F5"]
+  run -->|1| f01["01-ddl.sql<br/>tabel + constraint"]
+  run -->|2| f02["02-seed.sql<br/>data contoh"]
+  run -->|3| f04["04-data-uji.sql<br/>data uji"]
+  run -->|4| f05["05-laporan.sql<br/>4 view"]
+  run -->|5| f07["07-index.sql<br/>index"]
+  subgraph sendiri["Dijalankan sendiri, tidak lewat 00-run-all.sql"]
+    f03["03-test-invalid.sql<br/>harus ditolak"]
+    f06["06-transaksi.sql<br/>COMMIT dan ROLLBACK"]
+  end
+  f04 ~~~ sendiri
+  style sendiri fill:#EEF3FA,stroke:#1C4587,color:#1B3868
+  style run fill:#1C4587,color:#fff,stroke:#1C4587
+  style f01 fill:#1C4587,color:#fff,stroke:#1C4587
+  style f02 fill:#1C4587,color:#fff,stroke:#1C4587
+  style f04 fill:#F06634,color:#fff,stroke:#F06634
+  style f05 fill:#F06634,color:#fff,stroke:#F06634
+  style f07 fill:#F06634,color:#fff,stroke:#F06634
+  style f03 fill:#1C4587,color:#fff,stroke:#1C4587
+  style f06 fill:#F06634,color:#fff,stroke:#F06634
+```
 
 ## Data uji dan index
 
@@ -56,16 +88,16 @@ Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi 
 1. (+5) Jalankan query utama tim dari Java atau Node.js: salin `Main.java` atau `mutasi.mjs`, ganti SQL-nya, kirim nilai filter lewat bind variable, password tetap dari environment variable. Jalankan juga dengan nilai berisi `' OR '1'='1` dan catat hasilnya.
 2. (+5) Tambah satu view `<awalan>_LAP_PERSENTASE`: porsi tiap kelompok terhadap total (subquery di dalam `ROUND`, seperti Tantangan tambahan Demo 1).
 
-## Persiapan Presentasi (sesi 24, 16.00–17.00)
+## Persiapan Presentasi (sesi 24, 16.00-17.00)
 
 Tiap kelompok tampil 5 menit presentasi + 3 menit tanya jawab, tanpa slide. README repo kelompok menjadi alur bicara dan demo dijalankan langsung di VS Code dari laptop salah satu anggota. **Urutan presentasi diumumkan di akhir sesi 23.** Pergantian kelompok dilakukan saat tanya jawab: kelompok berikutnya menyiapkan laptop, membuka VS Code, dan memasang koneksi selagi kelompok sebelumnya menjawab pertanyaan.
 
 Alur 5 menit:
 
-1. Masalah, pengguna, fitur MVP (30 detik).
+1. Masalah, ide dan produk BNI yang dikaitkan, fitur MVP (30 detik).
 2. ERD: entity pusat, relasi, tabel pengguna + role, satu aturan data penting dengan alasan bisnis.
 3. Demo langsung: `00-run-all.sql` jalan, satu perintah dari `03-test-invalid.sql` ditolak (kode ORA), view `<awalan>_LAP_RINGKASAN` tampil.
-4. Peta fitur → tabel → query: 2–3 endpoint pertama untuk backend.
+4. Peta fitur → tabel → query: 2-3 endpoint pertama untuk backend.
 
 Checklist sebelum presentasi:
 
@@ -82,7 +114,7 @@ Yang dinilai (project 100 poin, dinilai di kelas):
 | --- | --- | --- |
 | A. ERD + kamus data | 25 | ERD, skor `cek-erd.py`, entity sesuai fitur MVP, tabel pengguna + role, satu aturan data dan alasannya |
 | B. Database | 35 | `00-run-all.sql` live, skor `cek-lab.sql` sesi 22, satu input salah ditolak dengan kode ORA, data contoh masuk akal |
-| C. Laporan + kesiapan backend | 15 | `<awalan>_LAP_RINGKASAN` tampil dengan data, peta fitur mencakup tiap fitur MVP, 2–3 endpoint pertama |
-| D. Penyampaian | 25 | Masalah → data runtut, selesai 5 menit, tanya jawab dijawab dengan data atau query |
+| C. Laporan + kesiapan backend | 15 | `<awalan>_LAP_RINGKASAN` tampil dengan data, peta fitur mencakup tiap fitur MVP, 2-3 endpoint pertama |
+| D. Penyampaian | 25 | Masalah, ide dan produk BNI → data runtut, selesai 5 menit, tanya jawab dijawab dengan data atau query |
 
 Repo pukul 23.59 hanya untuk serah terima ke pengajar backend.

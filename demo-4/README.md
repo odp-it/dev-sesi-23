@@ -2,7 +2,7 @@
 
 [Persiapan](../README.md) · [Troubleshooting](../TROUBLESHOOTING.md)
 
-Kerjakan 4.0–4.2: jalankan query dari Java atau Node.js dengan bind variable.
+Kerjakan 4.0-4.2: jalankan query dari Java atau Node.js dengan bind variable.
 
 Pilih satu jalur. Keduanya menjalankan query mutasi yang sama dengan bind variable dan mencetak hasil yang sama. Koneksi langsung satu kali, tanpa connection pool dan tanpa file `.env` (dibahas di sesi 30).
 
@@ -39,7 +39,7 @@ $env:ORACLE_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR([Runti
 
 Variabel ini hanya berlaku di terminal itu. Buka terminal baru = ulangi 4.0.
 
-## 4.1–4.2 · Jalur Java
+## 4.1-4.2 · Jalur Java
 
 1. Masuk ke folder `java` dan cek JDK:
 
@@ -91,7 +91,7 @@ Mutasi SIM-1000004 bulan 2026-02
 
 5. Ganti argumen, mis. `SIM-1000001 2026-03`, dan jalankan lagi.
 
-## 4.1–4.2 · Jalur Node.js
+## 4.1-4.2 · Jalur Node.js
 
 1. Masuk ke folder `node` dan install dependency (sekali saja):
 

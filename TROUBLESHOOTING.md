@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `Error: No session associated with the current worksheet`, atau tombol Run belum aktif | File `.sql` belum dipasangi koneksi, atau folder belum di-Trust | **Attach Connection** di tiap file; **Trust Folder & Continue** pada dialog Restricted Mode |
 | Setelah `Read-Host -MaskInput` di Windows PowerShell 5.1 password terlihat di layar | `-MaskInput` hanya ada di PowerShell 7; di 5.1 tidak error | Cek `$PSVersionTable.PSVersion`; di 5.1 pakai blok `-AsSecureString`. Password yang sudah terlihat: ganti password `ALP_DEV` (ulang 1.4 sesi 21) |
-| Angka R1–R6 beda dengan expected | Data sesi 22 tidak lengkap atau sudah berisi data bulk | Jalankan `demo-1/catchup/00-catchup-sesi-22.sql`, lalu ulangi dari Demo 1 |
+| Angka R1-R6 beda dengan expected | Data sesi 22 tidak lengkap atau sudah berisi data bulk | Jalankan `demo-1/catchup/00-catchup-sesi-22.sql`, lalu ulangi dari Demo 1 |
 | Session B langsung melihat perubahan sebelum `COMMIT` | Kedua editor memakai tab/dokumen yang sama, atau `COMMIT` sudah terjalankan | Pastikan B dijalankan dari file `demo-2/02-cek-session-b.sql`, bukan dari `demo-2/02-transfer.sql` |
 | Run Statement di session B terus berputar | Session B menjalankan `UPDATE` pada baris yang sedang dikunci session A | Jalankan `COMMIT` atau `ROLLBACK` di session A; session B lanjut sendiri |
 | `ORA-00001: unique constraint (ALP_DEV.UQ_TRANSACTIONS_REF) violated` di 2.2 | Transfer 2.2 sudah pernah di-commit (ref `REF-SIM-T00001` sudah ada) | `ROLLBACK;` lalu jalankan catchup, atau ganti ref menjadi `REF-SIM-T00003` dan `REF-SIM-T00004` |
