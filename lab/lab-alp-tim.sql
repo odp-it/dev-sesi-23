@@ -1,15 +1,15 @@
--- Sesi 23 · TEMPLATE LAMA (satu file). Lab sekarang memakai db/04-data-uji.sql s.d. db/07-index.sql di repo kelompok
+-- Sesi 23 · TEMPLATE LAMA (satu file). Lab sekarang memakai db/04-test-data.sql s.d. db/07-index.sql di repo kelompok
 -- (template odp-it/alp-db-template); file ini hanya rujukan pola. Cek otomatis tetap cek-lab.sql sesi 23.
 -- Pakai tabel ALP kelompok dari Lab sesi 22 (awalan kelompok, mis. GRD_). Semua nama view dan index memakai
 -- awalan yang sama. Semua contoh di bawah berupa komentar: ganti <...> dengan nama tabel dan kolom kelompok.
 -- Data simulasi saja.
 
--- 1. Data uji: tabel transaksi utama kelompok minimal 5.000 baris (disarankan 50.000)
---    Dibangkitkan dengan rumus (CONNECT BY, MOD) seperti ../demo-3/03-bulk-transactions.sql. Beri penanda data uji
---    (mis. kode berawalan 'UJI-') supaya bisa dihapus lagi, dan hapus dulu data uji lama supaya file
---    aman dijalankan ulang. Sebar ke ±500 induk uji (akun/pembeli/kurir uji): dengan sedikit induk, optimizer
+-- 1. Test data: tabel transaksi utama kelompok minimal 5.000 baris (disarankan 50.000)
+--    Di-generate dengan rumus (CONNECT BY, MOD) seperti ../demo-3/03-bulk-transactions.sql. Beri penanda test data
+--    (mis. kode berawalan 'UJI-') supaya bisa dihapus lagi, dan hapus dulu test data lama supaya file
+--    aman dijalankan ulang. Sebar ke ±500 parent test (akun/pembeli/kurir untuk test): dengan sedikit parent, optimizer
 --    tetap memilih full scan dan index tidak terpakai.
---    Semua constraint tetap berlaku untuk data uji.
+--    Semua constraint tetap berlaku untuk test data.
 -- DELETE FROM <awalan>_<tabel_transaksi> WHERE <kolom_kode> LIKE 'UJI-%';
 -- INSERT INTO <awalan>_<tabel_transaksi> (<kolom>, ...)
 -- SELECT 'UJI-' || LPAD(g.n, 6, '0'),
@@ -30,7 +30,7 @@
 -- SELECT * FROM <awalan>_lap_ringkasan FETCH FIRST 10 ROWS ONLY;
 
 -- 3. Laporan data tanpa pasangan (mis. pelanggan tanpa transaksi): LEFT JOIN atau NOT EXISTS, 2 tabel kelompok.
---    Hasilnya harus minimal 1 baris: siapkan satu data induk yang memang belum punya pasangan.
+--    Hasilnya harus minimal 1 baris: siapkan satu data parent yang memang belum punya pasangan.
 -- CREATE OR REPLACE VIEW <awalan>_lap_tanpa_pasangan AS
 -- SELECT ...;
 -- SELECT * FROM <awalan>_lap_tanpa_pasangan;

@@ -118,4 +118,4 @@ Yang harus terlihat: sama dengan jalur Java, dengan baris pertama `Mutasi SIM-10
 Pilih Java atau Node.js (atau keduanya). Jangan mengubah file asli: salin dulu (`Main.java` menjadi `MutasiJenis.java`, nama kelas ikut diganti; `mutasi.mjs` menjadi `mutasi-jenis.mjs`).
 
 1. Tambahkan argumen ke-3 opsional: jenis transaksi (`SETOR`, `TARIK`, ...). Kalau diisi, hanya jenis itu yang tampil; kalau kosong, semua jenis. Nilai jenis harus lewat bind variable. Coba `SIM-1000004 2026-02 SETOR` dan `SIM-1000004 2026-02 TARIK`.
-2. Uji ketahanan bind variable: jalankan program dengan nomor rekening berisi tanda kutip dan `OR`: `"SIM-1000004' OR '1'='1"`. Berapa transaksi yang tampil, dan kenapa itu jawaban yang benar? Bayangkan kalau nilainya disambung ke string SQL.
+2. Test ketahanan bind variable: jalankan program dengan nomor rekening berisi tanda kutip dan `OR`: `"SIM-1000004' OR '1'='1"`. Berapa transaksi yang tampil, dan kenapa itu jawaban yang benar? Bayangkan kalau nilainya disambung ke string SQL.

@@ -6,7 +6,7 @@ Kerjakan 3.0-3.4: baca execution plan, buat index, dan bandingkan sebelum dan se
 
 ## 3.0 Izin membaca statistik eksekusi
 
-`DBMS_XPLAN.DISPLAY_CURSOR` (dipakai di P3 dan P6) membaca view sistem `V$SQL` dan `V$SESSION`. User `ALP_DEV` belum punya izin itu. Di laptop sendiri kamu admin database-nya, jadi berikan izinnya sekali lewat terminal di folder `demo-3`:
+`DBMS_XPLAN.DISPLAY_CURSOR` (dipakai di P3 dan P6) membaca view sistem `V$SQL` dan `V$SESSION`. User `ALP_DEV` belum punya izin itu. Di laptop sendiri, peserta adalah admin database-nya, jadi berikan izinnya sekali lewat terminal di folder `demo-3`:
 
 ```bash
 docker cp setup/02-grant-plan-stats.sql oracle-alp:/tmp/02-grant-plan-stats.sql
@@ -21,7 +21,7 @@ Buka `03-bulk-transactions.sql`, pasang koneksi, tekan **F5**. Tunggu 10-20 deti
 
 Yang harus terlihat di akhir **Script Output**: `200000 rows inserted.`, `Commit complete.`, `JUMLAH_TRANSAKSI 200127`, `JUMLAH_REKENING 515`. Angka `200127` berlaku bila transfer Demo 2 sudah di-commit; kalau belum, `200125`.
 
-Data bulk masuk ke rekening uji `SIM-2000001` s.d. `SIM-2000500` milik `CIF-SIM-9999` di `KCP-SIM-99`. Rekening Tabungan UMKM asli tidak berubah, jadi mutasi `SIM-1000004` (account_id 4) tetap 4 transaksi di Februari.
+Data bulk masuk ke rekening test `SIM-2000001` s.d. `SIM-2000500` milik `CIF-SIM-9999` di `KCP-SIM-99`. Rekening Tabungan UMKM asli tidak berubah, jadi mutasi `SIM-1000004` (account_id 4) tetap 4 transaksi di Februari.
 
 ## 3.2 Plan dan Buffers sebelum index
 
@@ -46,7 +46,7 @@ Catat ke tabel ini (angka dari kolom baris `Id 0`):
 3. P6: jalankan query dengan statistik lalu `DISPLAY_CURSOR`.
 4. Lengkapi baris "Sesudah index" di tabel.
 
-Yang harus terlihat: operation berubah, cost dan Buffers turun jauh, A-Rows tetap 4. Angka E-Rows (perkiraan optimizer) sama di kedua plan; yang berubah cara membacanya.
+Yang harus terlihat: operation berubah, cost dan Buffers turun jauh, A-Rows tetap 4. Angka E-Rows (estimasi optimizer) sama di kedua plan; yang berubah cara membacanya.
 
 ## 3.4 Pola yang membuat index tidak terpakai
 
@@ -60,5 +60,5 @@ Kalau ingin data kembali kecil sebelum Demo 4 atau sesi berikutnya: buka `03b-ha
 
 Kerjakan di file baru. Data bulk dan index `IDX_TXN_ACCOUNT_AT` dari langkah 3.1-3.3 sudah ada (untuk nomor 2 index itu wajib ada).
 
-1. Cari satu transaksi dengan `ref_no = 'REF-SIM-000070'`. Lewat `EXPLAIN PLAN` dan `DBMS_XPLAN.DISPLAY`, index mana yang dipakai Oracle, dan kenapa index itu sudah ada tanpa kamu membuatnya?
+1. Cari satu transaksi dengan `ref_no = 'REF-SIM-000070'`. Lewat `EXPLAIN PLAN` dan `DBMS_XPLAN.DISPLAY`, index mana yang dipakai Oracle, dan kenapa index itu sudah ada padahal tidak dibuat sendiri??
 2. Bandingkan dua plan untuk rekening 4 di Februari 2026: `SELECT COUNT(*)` dan `SELECT ref_no`. Mana yang cukup membaca index saja, dan mana yang masih membuka tabel? Cari baris `TABLE ACCESS` di plan.

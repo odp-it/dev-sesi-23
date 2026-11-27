@@ -25,7 +25,7 @@ Cara menjalankan SQL sama dengan sesi 22: pasang koneksi lewat status bar, **Run
 
 ## Posisi Sesi di Project ALP
 
-Sesi 21-24 membentuk satu project: setiap kelompok (3-4 orang, laptop pribadi) menghasilkan database ALP yang bisa dibangun ulang, terdokumentasi, dan dipresentasikan. Demo selalu memakai kasus Tabungan UMKM; Lab adalah langkah yang sama untuk tema kelompok (Perbankan, E-commerce, atau Logistik) di repo kelompok.
+Sesi 21-24 membentuk satu project: setiap kelompok (3-4 orang, laptop pribadi) menghasilkan database ALP yang bisa di-rebuild dan dipresentasikan, lengkap dengan dokumentasinya. Demo selalu memakai kasus Tabungan UMKM; Lab adalah langkah yang sama untuk tema kelompok (Perbankan, E-commerce, atau Logistik) di repo kelompok.
 
 ```mermaid
 ---
@@ -55,14 +55,14 @@ flowchart LR
 | --- | --- | --- |
 | 1 | 21 | `docs/erd.drawio.png`, `docs/kamus-data.md`, `docs/review.md` |
 | 2 | 22 | `db/01-ddl.sql`, `db/02-seed.sql`, `db/03-test-invalid.sql`, `db/00-run-all.sql` |
-| **3** | **23 (sesi ini)** | `db/04-data-uji.sql`, `db/05-laporan.sql`, `db/06-transaksi.sql`, `db/07-index.sql`, README bagian peta fitur, laporan, pertanyaan bisnis, bukti cek |
+| **3** | **23 (sesi ini)** | `db/04-test-data.sql`, `db/05-laporan.sql`, `db/06-transaksi.sql`, `db/07-index.sql`, README bagian peta fitur, laporan, pertanyaan bisnis, bukti cek |
 | Presentasi | 24, 16.00-17.00 | 5 menit presentasi + 3 menit tanya jawab per kelompok, tanpa slide, README sebagai alur, demo langsung |
 
 Urutan presentasi diumumkan di akhir sesi ini.
 
-## Jembatan ke Tema Kelompok
+## Dari Demo ke Tema Kelompok
 
-Setiap konsep Demo punya padanan di tema kelompok. Nama view dan index di tabel ini adalah contoh dari tiga kelompok fiktif (KasUMKM, PasarUMKM, KirimUMKM); kelompok memakai awalan dan nama kolomnya sendiri.
+Setiap konsep Demo ada versinya di tema kelompok. Nama view dan index di tabel ini adalah contoh dari tiga kelompok fiktif (KasUMKM, PasarUMKM, KirimUMKM); kelompok memakai awalan dan nama kolomnya sendiri.
 
 | Konsep di Demo (Tabungan UMKM) | Perbankan (`KAS_`) | E-commerce (`MKT_`) | Logistik (`KRM_`) |
 | --- | --- | --- | --- |
@@ -97,7 +97,7 @@ Tabungan UMKM adalah fitur keuangan digital untuk nasabah UMKM sebuah bank fikti
 
 ## Cleanup
 
-1. (Opsional) `demo-3/03b-hapus-bulk.sql` untuk menghapus data bulk. Data uji `UJI` di repo kelompok dibiarkan: laporan dashboard memfilter data `SIM`.
+1. (Opsional) `demo-3/03b-hapus-bulk.sql` untuk menghapus data bulk. Test data `UJI` di repo kelompok dibiarkan: laporan dashboard memfilter data `SIM`.
 2. Tutup terminal supaya `ORACLE_PASSWORD` hilang dari memori.
 3. `docker stop oracle-alp` kalau sudah selesai.
 

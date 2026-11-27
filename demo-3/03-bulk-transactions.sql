@@ -1,7 +1,7 @@
 -- Sesi 23 · Data bulk untuk latihan optimasi
--- Menambah 1 cabang uji, 1 nasabah uji, 500 rekening uji, dan 200.000 transaksi (Januari-Maret 2026).
--- Data dibangkitkan dengan rumus (bukan acak), jadi hasilnya sama di semua laptop.
--- Jalankan sebagai ALP_DEV dengan Run Script (F5). Waktu uji: 10-20 detik.
+-- Menambah 1 cabang test, 1 nasabah test, 500 rekening test, dan 200.000 transaksi (Januari-Maret 2026).
+-- Data di-generate dengan rumus (bukan acak), jadi hasilnya sama di semua laptop.
+-- Jalankan sebagai ALP_DEV dengan Run Script (F5). Waktu test: 10-20 detik.
 -- Data Tabungan UMKM asli (rekening SIM-1000001 s.d. SIM-1000015) tidak diubah.
 
 INSERT INTO branches (branch_code, branch_name, city)
@@ -11,7 +11,7 @@ INSERT INTO customers (cif_no, full_name, email, phone, segment, branch_id)
 VALUES ('CIF-SIM-9999', 'Data Uji Contoh', 'data.uji@example.com', NULL, 'UMKM',
         (SELECT branch_id FROM branches WHERE branch_code = 'KCP-SIM-99'));
 
--- 500 rekening uji SIM-2000001 s.d. SIM-2000500
+-- 500 rekening test SIM-2000001 s.d. SIM-2000500
 INSERT INTO accounts (account_no, customer_id, product, balance, status, opened_at)
 SELECT 'SIM-' || TO_CHAR(2000000 + LEVEL),
        (SELECT customer_id FROM customers WHERE cif_no = 'CIF-SIM-9999'),
@@ -31,7 +31,7 @@ SELECT a.account_id,
 FROM (SELECT LEVEL AS n FROM dual CONNECT BY LEVEL <= 200000) g
 JOIN accounts a ON a.account_no = 'SIM-' || TO_CHAR(2000000 + MOD(g.n - 1, 500) + 1);
 
--- Saldo rekening uji = total transaksinya, supaya rekonsiliasi tetap cocok
+-- Saldo rekening test = total transaksinya, supaya rekonsiliasi tetap cocok
 MERGE INTO accounts a
 USING (SELECT account_id,
               SUM(CASE WHEN txn_type = 'SETOR' THEN amount ELSE -amount END) AS saldo

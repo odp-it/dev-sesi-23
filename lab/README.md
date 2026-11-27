@@ -10,13 +10,13 @@ Struktur file Tahap 3 (dari template repo kelompok):
 
 | File | Isi | Masuk `00-run-all.sql` |
 | --- | --- | --- |
-| `db/04-data-uji.sql` | Data uji di tabel transaksi utama, penanda `UJI` | Ya |
+| `db/04-test-data.sql` | Test data di tabel transaksi utama, penanda `UJI` | Ya |
 | `db/05-laporan.sql` | Empat view: `<awalan>_LAP_RINGKASAN`, `<awalan>_LAP_TANPA_PASANGAN`, `<awalan>_CEK_VALIDASI`, `<awalan>_QUERY_UTAMA` | Ya |
 | `db/06-transaksi.sql` | Proses bisnis dengan `COMMIT` dan skenario gagal `ROLLBACK` | Tidak (sengaja memicu error) |
 | `db/07-index.sql` | Plan sebelum, `CREATE INDEX`, plan sesudah | Ya |
 
-1. **Data uji (`db/04-data-uji.sql`).** Minimal 5.000 baris di tabel transaksi utama (disarankan 50.000), dengan penanda `UJI` di kode. **Sebar ke ±500 entitas uji** (akun, pembeli, atau kurir uji dengan kode `...-UJI-0001` dan seterusnya), bukan ke 10 entitas: pola `CONNECT BY` dan `MOD(n, 500) + 1` seperti 515 rekening di Demo 3. Jalankan `DBMS_STATS.GATHER_TABLE_STATS` sesudahnya. Semua constraint tetap berlaku. Alasannya ada di bagian Data uji dan index di bawah.
-2. **Laporan (`db/05-laporan.sql`).** Buat empat view dengan nama persis di atas: `LAP_RINGKASAN` (`JOIN` minimal 2 tabel kelompok + `GROUP BY`, filter data `SIM` supaya data uji tidak ikut), `LAP_TANPA_PASANGAN` (`LEFT JOIN` atau `NOT EXISTS`, minimal 1 baris), `CEK_VALIDASI` (hanya baris yang melanggar aturan; data sehat = 0 baris), dan `QUERY_UTAMA` (query yang paling sering dipakai aplikasi, `WHERE` berisi filter `=` dan rentang waktu). Buktikan validasinya: rusak satu data, hitung lagi, `ROLLBACK`.
+1. **Test data (`db/04-test-data.sql`).** Minimal 5.000 baris di tabel transaksi utama (disarankan 50.000), dengan penanda `UJI` di kode. **Sebar ke ±500 entity** (akun, pembeli, atau kurir test dengan kode `...-UJI-0001` dan seterusnya), bukan ke 10 entity: pola `CONNECT BY` dan `MOD(n, 500) + 1` seperti 515 rekening di Demo 3. Jalankan `DBMS_STATS.GATHER_TABLE_STATS` sesudahnya. Semua constraint tetap berlaku. Alasannya ada di bagian Test data dan index di bawah.
+2. **Laporan (`db/05-laporan.sql`).** Buat empat view dengan nama persis di atas: `LAP_RINGKASAN` (`JOIN` minimal 2 tabel kelompok + `GROUP BY`, filter data `SIM` supaya test data tidak ikut), `LAP_TANPA_PASANGAN` (`LEFT JOIN` atau `NOT EXISTS`, minimal 1 baris), `CEK_VALIDASI` (hanya baris yang melanggar aturan; data sehat = 0 baris), dan `QUERY_UTAMA` (query yang paling sering dipakai aplikasi, `WHERE` berisi filter `=` dan rentang waktu). Buktikan validasinya: rusak satu data, hitung lagi, `ROLLBACK`.
 3. **Transaksi (`db/06-transaksi.sql`).** Satu proses bisnis tema kelompok, minimal 2 perintah DML: skenario berhasil dengan `COMMIT`, skenario gagal yang di-`ROLLBACK`, dengan `SELECT` sebelum dan sesudah. `CEK_VALIDASI` tetap 0 baris setelahnya.
 4. **Index (`db/07-index.sql`).** Catat plan `QUERY_UTAMA` sebelum index, buat index composite berawalan kelompok (kolom filter `=` dulu, lalu kolom waktu), catat plan sesudahnya. Operation harus berubah dari `TABLE ACCESS FULL` ke `INDEX RANGE SCAN`.
 5. **`00-run-all.sql`.** Panggil `01`, `02`, `04`, `05`, `07` (06 tidak). Jalankan dua kali berturut-turut tanpa error.
@@ -39,7 +39,7 @@ flowchart TB
   run["00-run-all.sql · F5"]
   run -->|1| f01["01-ddl.sql<br/>tabel + constraint"]
   run -->|2| f02["02-seed.sql<br/>data contoh"]
-  run -->|3| f04["04-data-uji.sql<br/>data uji"]
+  run -->|3| f04["04-test-data.sql<br/>test data"]
   run -->|4| f05["05-laporan.sql<br/>4 view"]
   run -->|5| f07["07-index.sql<br/>index"]
   subgraph sendiri["Dijalankan sendiri, tidak lewat 00-run-all.sql"]
@@ -58,9 +58,9 @@ flowchart TB
   style f06 fill:#F06634,color:#fff,stroke:#F06634
 ```
 
-## Data uji dan index
+## Test data dan index
 
-Hasil uji pada contoh: 6.000 baris yang disebar ke 10 entitas membuat optimizer tetap memilih full scan, jadi index tidak terpakai dan kriteria plan di `cek-lab.sql` bernilai 0. Dengan 50.000 baris di 500 entitas uji, optimizer memakai `INDEX RANGE SCAN` pada index kelompok. Jadi ukuran tabel saja tidak cukup: tiap entitas harus punya baris sedikit dibanding total, supaya filter `=` + rentang waktu memang selektif.
+Hasil test pada contoh: 6.000 baris yang disebar ke 10 entity membuat optimizer tetap memilih full scan, jadi index tidak terpakai dan kriteria plan di `cek-lab.sql` bernilai 0. Dengan 50.000 baris di 500 entity, optimizer memakai `INDEX RANGE SCAN` pada index kelompok. Jadi ukuran tabel saja tidak cukup: tiap entity harus punya baris sedikit dibanding total, supaya filter `=` + rentang waktu memang selektif.
 
 ## Rubrik Lab (100 poin)
 
@@ -71,7 +71,7 @@ Rubrik ini panduan kerja kelompok; nilai project diberikan saat presentasi sesi 
 | Laporan ringkasan | 20 | `cek-lab.sql` | `LAP_RINGKASAN` berisi minimal 1 baris (8), membaca minimal 2 tabel tim (6), memakai `GROUP BY` (6) |
 | Laporan tanpa pasangan | 10 | `cek-lab.sql` | `LAP_TANPA_PASANGAN` minimal 1 baris (4), 2 tabel tim (3), `LEFT JOIN` atau `NOT EXISTS` (3) |
 | Query validasi | 10 | `cek-lab.sql` | `CEK_VALIDASI` membaca tabel tim (5) dan menghasilkan 0 baris pada data sehat (5) |
-| Data uji | 10 | `cek-lab.sql` | Tabel tim terbesar minimal 5.000 baris (10), atau minimal 1.000 baris (5) |
+| Test data | 10 | `cek-lab.sql` | Tabel tim terbesar minimal 5.000 baris (10), atau minimal 1.000 baris (5) |
 | Index buatan tim | 10 | `cek-lab.sql` | Index di tabel tim di luar index PK/`UNIQUE`: composite (10), satu kolom (5) |
 | Query utama + plan | 20 | `cek-lab.sql` | `QUERY_UTAMA` memakai `WHERE` dan berisi minimal 1 baris (5); plan memakai index buatan tim lewat range atau unique scan (15) |
 | Transaksi | 10 | Review tim lain | Proses bisnis minimal 2 DML dengan `COMMIT` (5); skenario gagal di-`ROLLBACK` dan data terbukti kembali (5) |
@@ -81,7 +81,7 @@ Rubrik ini panduan kerja kelompok; nilai project diberikan saat presentasi sesi 
 
 Prioritas: kerjakan dulu kriteria wajib: laporan ringkasan (20), query validasi (10), index buatan tim (10), query utama + plan (20) = 60 poin. Target minimal 60 poin.
 
-`cek-lab.sql` membaca katalog, menjalankan `SELECT` pada view kelompok, dan membuat plan `QUERY_UTAMA`. Baris plan milik skrip dibatalkan lagi (`ROLLBACK TO SAVEPOINT`), jadi data dan transaksi yang belum di-commit tidak berubah.
+`cek-lab.sql` membaca katalog, menjalankan `SELECT` pada view kelompok, dan membuat plan `QUERY_UTAMA`. Baris plan milik script dibatalkan lagi (`ROLLBACK TO SAVEPOINT`), jadi data dan transaksi yang belum di-commit tidak berubah.
 
 ## Bonus Lab (opsional, maks. +10)
 
@@ -95,14 +95,14 @@ Tiap kelompok tampil 5 menit presentasi + 3 menit tanya jawab, tanpa slide. READ
 Alur 5 menit:
 
 1. Masalah, ide dan produk BNI yang dikaitkan, fitur MVP (30 detik).
-2. ERD: entity pusat, relasi, tabel pengguna + role, satu aturan data penting dengan alasan bisnis.
+2. ERD: entity pusat, relasi, tabel user + role, satu aturan data penting dengan alasan bisnis.
 3. Demo langsung: `00-run-all.sql` jalan, satu perintah dari `03-test-invalid.sql` ditolak (kode ORA), view `<awalan>_LAP_RINGKASAN` tampil.
 4. Peta fitur → tabel → query: 2-3 endpoint pertama untuk backend.
 
 Checklist sebelum presentasi:
 
 - [ ] `00-run-all.sql` jalan dua kali berturut-turut tanpa error, di laptop yang dipakai presentasi.
-- [ ] ERD punya tabel pengguna + role; ERD dan kamus sama dengan tabel di database.
+- [ ] ERD punya tabel user + role; ERD dan kamus sama dengan tabel di database.
 - [ ] `03-test-invalid.sql` minimal 3 perintah ditolak, kode ORA dicatat di komentar.
 - [ ] Empat view Lab 23 ada; `<awalan>_CEK_VALIDASI` 0 baris.
 - [ ] Bagian "Bukti cek" terisi (ketiga skor dan plan sebelum/sesudah).
@@ -112,7 +112,7 @@ Yang dinilai (project 100 poin, dinilai di kelas):
 
 | Komponen | Poin | Yang ditunjukkan |
 | --- | --- | --- |
-| A. ERD + kamus data | 25 | ERD, skor `cek-erd.py`, entity sesuai fitur MVP, tabel pengguna + role, satu aturan data dan alasannya |
+| A. ERD + kamus data | 25 | ERD, skor `cek-erd.py`, entity sesuai fitur MVP, tabel user + role, satu aturan data dan alasannya |
 | B. Database | 35 | `00-run-all.sql` live, skor `cek-lab.sql` sesi 22, satu input salah ditolak dengan kode ORA, data contoh masuk akal |
 | C. Laporan + kesiapan backend | 15 | `<awalan>_LAP_RINGKASAN` tampil dengan data, peta fitur mencakup tiap fitur MVP, 2-3 endpoint pertama |
 | D. Penyampaian | 25 | Masalah, ide dan produk BNI → data runtut, selesai 5 menit, tanya jawab dijawab dengan data atau query |

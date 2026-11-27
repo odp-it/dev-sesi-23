@@ -3,8 +3,8 @@
 --   1. Ganti awalan di baris DEFINE di bawah (huruf besar, tanpa garis bawah), mis. GRD untuk tabel GRD_*.
 --   2. Pasang koneksi ALP_DEV @ FREEPDB1, tekan Run Script (F5).
 --   3. Baca tabel poin di Script Output. Perbaiki file Lab tim, jalankan lagi, lalu cek lagi.
--- Skrip ini membaca katalog, menjalankan SELECT pada view tim, dan membuat plan query utama.
--- Baris plan milik skrip dibatalkan lagi dengan ROLLBACK TO SAVEPOINT: data dan transaksi tim tidak diubah.
+-- Script ini membaca katalog, menjalankan SELECT pada view tim, dan membuat plan query utama.
+-- Baris plan milik script dibatalkan lagi dengan ROLLBACK TO SAVEPOINT: data dan transaksi tim tidak diubah.
 
 SET SERVEROUTPUT ON SIZE UNLIMITED
 SET VERIFY OFF
@@ -135,14 +135,14 @@ BEGIN
   v_total := v_total + p;
   baris('3. Query validasi (0 baris)', v_hasil, p, 10);
 
-  -- 4. Data uji (10): tabel tim terbesar >= 5.000 baris 10, >= 1.000 baris 5
+  -- 4. Test data (10): tabel tim terbesar >= 5.000 baris 10, >= 1.000 baris 5
   FOR t IN (SELECT table_name FROM user_tables WHERE table_name LIKE v_pola ESCAPE '\') LOOP
     EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "' || t.table_name || '"' INTO n_baris;
     n_maks := GREATEST(n_maks, n_baris);
   END LOOP;
   p := CASE WHEN n_maks >= 5000 THEN 10 WHEN n_maks >= 1000 THEN 5 ELSE 0 END;
   v_total := v_total + p;
-  baris('4. Data uji (min. 5.000 baris)', 'terbesar ' || n_maks || ' baris', p, 10);
+  baris('4. Test data (min. 5.000 baris)', 'terbesar ' || n_maks || ' baris', p, 10);
 
   -- 5. Index buatan tim, bukan index milik PK/UNIQUE (10): composite 10, satu kolom 5
   FOR i IN (SELECT ui.index_name,
